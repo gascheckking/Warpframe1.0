@@ -3,55 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WarpAI - Onchain Activity Dashboard</title>
+  <title>WarpAi - Onchain Activity Dashboard</title>
+  <!-- Fonts & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="app-header">
-    <h1>WarpAI</h1>
-    <button id="connectWallet">Connect Wallet</button>
-    <span id="walletAddress"></span>
-  </header>
-  <main>
-    <section class="gas-section">
-      <h2>Gas Price</h2>
-      <p id="gasPrice">Loading...</p>
-    </section>
-    <section class="warp-points-section">
-      <h2>Warp Points</h2>
-      <p id="warpPoints">0 WP</p>
-    </section>
-    <section class="activity-section">
-      <h2>Latest Activity</h2>
-      <ul id="activityList">
-        <li>Minted NFT on Zora</li>
-        <li>Traded ETH on Uniswap</li>
-      </ul>
-    </section>
-  </main>
-  <script>
-    async function fetchGas() {
-      try {
-        const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=b9bee1f4421d4eebb170067dc3e2e579");
-        const data = await res.json();
-        document.getElementById("gasPrice").textContent = `${data.speeds[1].estimatedFee.toFixed(1)} Gwei`;
-      } catch {
-        document.getElementById("gasPrice").textContent = "Error fetching gas data.";
-      }
-    }
-
-    async function connectWallet() {
-      if (!window.ethereum) return alert("Install MetaMask");
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      document.getElementById("walletAddress").textContent = accounts[0];
-      document.getElementById("warpPoints").textContent = `${Math.floor(Math.random() * 10000)} WP`;
-    }
-
-    document.getElementById("connectWallet").addEventListener("click", connectWallet);
-    fetchGas();
-    setInterval(fetchGas, 30000);
-  </script>
+  <div id="app">Laddar appen...</div>
+  <!-- App script -->
+  <script src="app.js"></script>
 </body>
 </html>
