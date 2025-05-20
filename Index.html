@@ -3,49 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WarpAI Onchain Dashboard</title>
-
-  <!-- Open Graph & Warpcast Frame Metadata -->
-  <meta property="og:title" content="WarpAI Onchain Dashboard" />
-  <meta property="og:image" content="https://warpframe.vercel.app/warp-preview.png" />
-  <meta name="fc:frame" content="vNext" />
-  <meta name="fc:frame:image" content="https://warpframe.vercel.app/warp-preview.png" />
-  <meta name="fc:frame:button:1" content="Track Wallet" />
-  <meta name="fc:frame:button:1:action" content="post" />
-  <meta name="fc:frame:post_url" content="https://warpframe.vercel.app/api/frame" />
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
-      background: #000;
-      color: #0f0;
-      height: 100%;
-      text-align: center;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      font-size: 1rem;
-      color: #ccc;
-    }
-  </style>
+  <title>WarpAI - Onchain Activity Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>WarpAI Frame Ready</h1>
-    <p>Track wallet activity via Farcaster Frame button</p>
-    <p>(Works inside Warpcast)</p>
-  </div>
+  <header class="app-header">
+    <h1>WarpAI</h1>
+    <button id="connectWallet">Connect Wallet</button>
+    <span id="walletAddress"></span>
+  </header>
+  <main>
+    <section class="gas-section">
+      <h2>Gas Price</h2>
+      <p id="gasPrice">Loading...</p>
+    </section>
+    <section class="warp-points-section">
+      <h2>Warp Points</h2>
+      <p id="warpPoints">0 WP</p>
+    </section>
+    <section class="activity-section">
+      <h2>Latest Activity</h2>
+      <ul id="activityList">
+        <li>Minted NFT on Zora</li>
+        <li>Traded ETH on Uniswap</li>
+      </ul>
+    </section>
+  </main>
+  <script>
+    async function fetchGas() {
+      try {
+        const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=b9bee1f4421d4eebb170067dc3e2e579");
+        const data = await res.json();
+        document.getElementById("gasPrice").textContent = `${data.speeds[1].estimatedFee.toFixed(1)} Gwei`;
+      } catch {
+        document.getElementById("gasPrice").textContent = "Error fetching gas data.";
+      }
+    }
+
+    async function connectWallet() {
+      if (!window.ethereum) return alert("Install MetaMask");
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      document.getElementById("walletAddress").textContent = accounts[0];
+      document.getElementById("warpPoints").textContent = `${Math.floor(Math.random() * 10000)} WP`;
+    }
+
+    document.getElementById("connectWallet").addEventListener("click", connectWallet);
+    fetchGas();
+    setInterval(fetchGas, 30000);
+  </script>
 </body>
 </html>
